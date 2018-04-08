@@ -1,23 +1,33 @@
 <!--  -->
 <template>
   <div class="controller-content">
+    <i class="icon-menu" @click="menuDisplay"></i>
     <div class="menu-wrapper">
-      <i class="icon-menu" @click="menuDisplay"></i>
-      <!-- <transition name="slide"> -->
+      <transition name="fade">
         <div class="menu-content" v-show="menuShow">
           <div class="header">
             <i class="icon-close" @click="menuDisplay"></i>
             <h1 class="text">Menu</h1>
           </div>
-          <div class="dropbox"></div>
+          <div class="dropbox" ref="dropbox" :class="{highlight:ishighlight}">
+            <h1 class="text">Please drag your audio files here</h1>
+          </div>
           <ul class="music-list">
-            <li class="song-info">
+            <li class="song-info" v-for="musicItem in musicList">
               <i class="icon-close"></i>
-              <span class="song-name">We Belong Together</span>
+              <span class="song-name">{{musicItem.name}}</span>
+              <audio :src="musicItem.url"></audio>
             </li>
           </ul>
+          <div class="play-control">
+            <div class="song-change">
+              <i class="icon-backward2"></i>
+              <i class="icon-pause"></i>
+              <i class="icon-forward3"></i>
+            </div>
+          </div>
         </div>
-      <!-- </transition> -->
+      </transition>
     </div>
   </div>
 </template>
@@ -26,7 +36,9 @@
 export default {
   data() {
     return {
-      menuShow: false
+      menuShow: false,
+      ishighlight: false,
+      musicList: []
     };
   },
 
@@ -38,6 +50,44 @@ export default {
     menuDisplay() {
       this.menuShow = !this.menuShow;
     }
+  },
+  mounted() {
+    var that = this;
+    (function dragAudioEvent() {
+      // this function can create is URL for a local resource
+      let getBoldURL = window.URL.createObjectURL.bind(URL);
+      // dragEvent listener
+      that.$refs.dropbox.ondragenter = (e) => {
+        e.preventDefault();
+        that.ishighlight = true;
+      };
+      that.$refs.dropbox.ondragover = (e) => {
+        e.preventDefault();
+      };
+      that.$refs.dropbox.ondrop = (e) => {
+        e.preventDefault();
+        const data = e.dataTransfer.files;
+        if (data.length < 1) {
+          return;
+        }
+        for (let i = 0; i < data.length; i++) {
+          if (data[i].type.indexOf('audio') !== -1) {
+            that.musicList.push({
+              name: data[i].name,
+              url: getBoldURL(data[i])
+            });
+          }
+          else {
+            alert(`${data[i].name} is not an Audio file`);
+          }
+        }
+        that.ishighlight = false;
+      };
+      that.$refs.dropbox.ondragleave = (e) => {
+        e.preventDefault();
+        that.ishighlight = false;
+      };
+    })();
   }
 };
 
@@ -47,17 +97,26 @@ export default {
 @import '../../common/stylus/color.styl';
 
 .controller-content {
+  .icon-menu {
+    position: absolute;
+    right: 0;
+    top: 0;
+    margin: 20px;
+    font-size: 40px;
+    color: light-green;
+  }
+
   .menu-wrapper {
     position: relative;
     width: 100%;
 
-    .icon-menu {
-      position: absolute;
-      right: 0;
-      top: 0;
-      margin: 20px;
-      font-size: 40px;
-      color: light-green;
+    // overflow: hidden;
+    .fade-enter-active, .fade-leave-active {
+      transition: transform 0.4s;
+    }
+
+    .fade-enter, .fade-leave-to { /* .fade-leave-active in below version 2.1.8 */
+      transform: translateX(340px);
     }
 
     .menu-content {
@@ -77,9 +136,9 @@ export default {
 
         .icon-close {
           flex: 0;
-          line-height:70px;
-          vertical-align :top;
-          margin-left:15px;
+          line-height: 70px;
+          vertical-align: top;
+          margin-left: 15px;
           font-size: 45px;
           color: dark-purple;
           font-weight: 700;
@@ -96,33 +155,91 @@ export default {
           text-align: right;
         }
       }
-      .dropbox{
-        height:150px;
-        margin:15px;
-        background-color :light-green;
+
+      .dropbox {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 150px;
+        margin: 15px;
+        background-color: light-green;
+
+        &.highlight {
+          opacity: 0.5;
+        }
+
+        .text {
+          font-size: 16px;
+          font-weight: 700;
+          color: rgba(0, 0, 0, 0.5);
+        }
       }
-      .music-list{
-        margin:30px 15px 15px 15px;
-        .song-info{
-          height:30px;
-          padding:10px;
-          background-color :light-orange;
-          > .icon-close{
-          line-height:30px;
-          padding:5px;
-          background-color:light-green;
-          border-radius:50%;
-          font-size:20px;
-          font-weight:700px; 
-          color:dark-purple;
+
+      .music-list {
+        margin: 30px 15px 15px 15px;
+        position: absolute;
+        top: 220px;
+        right: 0;
+        left: 0;
+        bottom: 80px;
+
+        .song-info {
+          height: 30px;
+          width: 290px;
+          padding: 10px;
+          margin-bottom: 10px;
+          background-color: light-orange;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+
+          > .icon-close {
+            line-height: 30px;
+            padding: 5px;
+            background-color: light-green;
+            border-radius: 50%;
+            font-size: 20px;
+            font-weight: 700px;
+            color: dark-purple;
           }
-          .song-name{
-            line-height:30px;
-            vertical-align :top;
-            margin-left:8px;
-            font-size:16px;
-            font-weight:700px; 
-            color:dark-purple;
+
+          .song-name {
+            line-height: 30px;
+            vertical-align: top;
+            margin-left: 8px;
+            font-size: 14px;
+            font-weight: 700px;
+            color: dark-purple;
+          }
+        }
+      }
+
+      .play-control {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 80px;
+        font-size: 0;
+        background-color: light-orange;
+
+        .song-change {
+          .icon-backward2, .icon-forward3 {
+            font-size: 32px;
+            color: light-green;
+            border-radius: 50%;
+          }
+
+          .icon-pause, .icon-play {
+            margin: 0 10px 0 12px;
+            padding: 10px;
+            background-color: light-red;
+            border-radius: 50%;
+            color: light-green;
+            font-size: 30px;
           }
         }
       }

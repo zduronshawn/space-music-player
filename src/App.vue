@@ -1,9 +1,8 @@
 <template>
   <div id="app">
-    <div class="space-wrapper">
-      <div class="controller-wrapper">
+    <div class="space-wrapper"></div>
+    <div class="controller-wrapper">
         <controller></controller>
-      </div>
     </div>
   </div>
 </template>
@@ -29,12 +28,11 @@ export default {
     width :100%;
     height :100%;
     background-color: dark-purple;
-    .controller-wrapper{
+  }
+  .controller-wrapper{
       position: absolute;
       top:0;
       right:0;
-      // background-color :dark-yellow;
-    }
   }
 }
 </style>

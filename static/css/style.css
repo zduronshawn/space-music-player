@@ -1,10 +1,10 @@
 @font-face {
   font-family: 'three-icon';
-  src:  url('fonts/three-icon.eot?l8q1gd');
-  src:  url('fonts/three-icon.eot?l8q1gd#iefix') format('embedded-opentype'),
-    url('fonts/three-icon.ttf?l8q1gd') format('truetype'),
-    url('fonts/three-icon.woff?l8q1gd') format('woff'),
-    url('fonts/three-icon.svg?l8q1gd#three-icon') format('svg');
+  src:  url('fonts/three-icon.eot?qv1ivm');
+  src:  url('fonts/three-icon.eot?qv1ivm#iefix') format('embedded-opentype'),
+    url('fonts/three-icon.ttf?qv1ivm') format('truetype'),
+    url('fonts/three-icon.woff?qv1ivm') format('woff'),
+    url('fonts/three-icon.svg?qv1ivm#three-icon') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -69,4 +69,19 @@
 }
 .icon-cloud-upload:before {
   content: "\e9c3";
+}
+.icon-play:before {
+  content: "\ea1c";
+}
+.icon-pause:before {
+  content: "\ea1d";
+}
+.icon-backward2:before {
+  content: "\ea1f";
+}
+.icon-forward3:before {
+  content: "\ea20";
+}
+.icon-volume-medium:before {
+  content: "\ea27";
 }

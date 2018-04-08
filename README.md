@@ -1,4 +1,4 @@
-# three
+# space music player
 
 > a three.js based vue project
 
