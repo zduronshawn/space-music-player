@@ -1,9 +1,7 @@
 <template>
   <div id="app">
     <div class="space-wrapper"></div>
-    <div class="controller-wrapper">
-        <controller></controller>
-    </div>
+    <controller class="controller-wrapper"></controller>
   </div>
 </template>
 
@@ -21,18 +19,21 @@ export default {
 @import 'common/stylus/color.styl';
 
 #app {
+  position: relative;
   width: 100%;
   height: 100%;
+  overflow: hidden;
 
   .space-wrapper {
-    width :100%;
-    height :100%;
+    width: 100%;
+    height: 100%;
     background-color: dark-purple;
   }
-  .controller-wrapper{
-      position: absolute;
-      top:0;
-      right:0;
+
+  .controller-wrapper {
+    position: absolute;
+    top: 0;
+    right: 0;
   }
 }
 </style>
