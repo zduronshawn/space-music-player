@@ -13,7 +13,7 @@
             <h1 class="text">Please drag your audio files here</h1>
           </div>
           <ul class="music-list">
-            <li class="song-info" v-for="musicItem in musicList">
+            <li class="song-info" v-for="(musicItem,index) in musicList" :key="musicItem.name" @dblclick="play(index)" :class="{'highlight':currentIndex===index}">
               <i class="icon-close"></i>
               <span class="song-name">{{musicItem.name}}</span>
               <audio :src="musicItem.url"></audio>
@@ -21,9 +21,9 @@
           </ul>
           <div class="play-control">
             <div class="song-change">
-              <i class="icon-backward2"></i>
-              <i class="icon-pause"></i>
-              <i class="icon-forward3"></i>
+              <i class="icon-backward2" @click="backward"></i>
+              <i :class="{'icon-pause':currentState,'icon-play':!currentState}" @click="playControl"></i>
+              <i class="icon-forward3" @click="forward"></i>
             </div>
           </div>
         </div>
@@ -33,12 +33,15 @@
 </template>
 
 <script>
+let currentSong = new Audio();
 export default {
   data() {
     return {
       menuShow: false,
       ishighlight: false,
-      musicList: []
+      musicList: [],
+      currentIndex: 0,
+      currentState: 0
     };
   },
 
@@ -49,10 +52,56 @@ export default {
   methods: {
     menuDisplay() {
       this.menuShow = !this.menuShow;
+    },
+    backward() {
+      if (this.musicList.length !== 0) {
+        if (this.currentIndex === 0) {
+          this.currentIndex = this.musicList.length - 1;
+        } else {
+          this.currentIndex--;
+        }
+        this.play(this.currentIndex);
+      } else {
+        console.log('the playlist is empty');
+      }
+    },
+    forward() {
+      if (this.musicList.length !== 0) {
+        if (this.currentIndex === this.musicList.length - 1) {
+          this.currentIndex = 0;
+        } else {
+          this.currentIndex++;
+        }
+        this.play(this.currentIndex);
+      } else {
+        console.log('the playlist is empty');
+      }
+    },
+    playControl() {
+      if (this.musicList.length === 0) {
+        console.log('the playlist is empty');
+      } else {
+        if (this.currentState) {
+          currentSong.pause();
+          this.currentState = 0;
+        } else if (this.currentState === 0 && currentSong.paused) {
+          currentSong.play();
+          this.currentState = 1;
+        }
+      }
+    },
+    play(index) {
+      this.currentIndex = index;
+      this.$nextTick(() => {
+        currentSong.src = this.musicList[this.currentIndex].url;
+        currentSong.play();
+      });
+      this.currentState = 1;
     }
   },
   mounted() {
-    var that = this;
+    let that = this;
+    let firstupload = true;
     (function dragAudioEvent() {
       // this function can create is URL for a local resource
       let getBoldURL = window.URL.createObjectURL.bind(URL);
@@ -76,12 +125,16 @@ export default {
               name: data[i].name,
               url: getBoldURL(data[i])
             });
-          }
-          else {
+          } else {
             alert(`${data[i].name} is not an Audio file`);
           }
         }
         that.ishighlight = false;
+        if (firstupload) {
+          // avoid The play() request was interrupted by a call to pause()
+          currentSong.src = that.musicList[0].url;
+          firstupload = false;
+        }
       };
       that.$refs.dropbox.ondragleave = (e) => {
         e.preventDefault();
@@ -112,7 +165,7 @@ export default {
 
     // overflow: hidden;
     .fade-enter-active, .fade-leave-active {
-      transition: transform 0.4s;
+      transition: transform 0.4s ease;
     }
 
     .fade-enter, .fade-leave-to { /* .fade-leave-active in below version 2.1.8 */
@@ -192,6 +245,13 @@ export default {
           white-space: nowrap;
           overflow: hidden;
           text-overflow: ellipsis;
+          cursor: pointer;
+
+          &.highlight {
+            background-color: highlight;
+            transition: 0.5s all ease;
+            transform: scale(1.05);
+          }
 
           > .icon-close {
             line-height: 30px;
@@ -233,7 +293,16 @@ export default {
             border-radius: 50%;
           }
 
-          .icon-pause, .icon-play {
+          .icon-pause {
+            margin: 0 10px 0 12px;
+            padding: 10px;
+            background-color: light-red;
+            border-radius: 50%;
+            color: light-green;
+            font-size: 30px;
+          }
+
+          .icon-play {
             margin: 0 10px 0 12px;
             padding: 10px;
             background-color: light-red;
