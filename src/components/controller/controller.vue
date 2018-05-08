@@ -13,7 +13,7 @@
             <h1 class="text">Please drag your audio files here</h1>
           </div>
           <ul class="music-list">
-            <li class="song-info" v-for="(musicItem,index) in musicList" :key="musicItem.name" @dblclick="play(index)" :class="{'highlight':currentIndex===index}">
+            <li class="song-info" v-for="(musicItem,index) in musicList" :key="musicItem.name" @dblclick.prevent="play(index)" :class="{'highlight':currentIndex===index}">
               <i class="icon-close"></i>
               <span class="song-name">{{musicItem.name}}</span>
               <audio :src="musicItem.url"></audio>
@@ -77,6 +77,7 @@ export default {
         console.log('the playlist is empty');
       }
     },
+    // control for play and pause
     playControl() {
       if (this.musicList.length === 0) {
         console.log('the playlist is empty');
@@ -90,12 +91,11 @@ export default {
         }
       }
     },
+    // the play function need to be updated
     play(index) {
       this.currentIndex = index;
-      this.$nextTick(() => {
-        currentSong.src = this.musicList[this.currentIndex].url;
-        currentSong.play();
-      });
+      currentSong.src = this.musicList[this.currentIndex].url;
+      currentSong.play();
       this.currentState = 1;
     }
   },
@@ -246,10 +246,11 @@ export default {
           overflow: hidden;
           text-overflow: ellipsis;
           cursor: pointer;
+          user-select: none;
+          transition: 0.5s all ease;
 
           &.highlight {
             background-color: highlight;
-            transition: 0.5s all ease;
             transform: scale(1.05);
           }
 

@@ -1,16 +1,21 @@
 <template>
   <div id="app">
-    <div class="space-wrapper"></div>
-    <controller class="controller-wrapper"></controller>
+    <div class="space-wrapper">
+      <three></three>
+    </div>
+    <controller class="controller-wrapper" ref="audioScoure"></controller>
   </div>
 </template>
 
 <script>
 import controller from '@/components/controller/controller';
+import three from '@/components/three/three';
+
 export default {
   name: 'App',
   components: {
-    controller
+    controller,
+    three
   }
 };
 </script>
