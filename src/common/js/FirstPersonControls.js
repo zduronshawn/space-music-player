@@ -1,7 +1,6 @@
 import * as THREE from 'three';
 
 export default function(object, domElement) {
-  console.log(object);
   this.object = object;
   this.target = new THREE.Vector3(0, 0, 0);
 

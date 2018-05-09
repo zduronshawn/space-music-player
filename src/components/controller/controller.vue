@@ -129,6 +129,7 @@ export default {
             alert(`${data[i].name} is not an Audio file`);
           }
         }
+        that.$emit('listUpdate', that.musicList);
         that.ishighlight = false;
         if (firstupload) {
           // avoid The play() request was interrupted by a call to pause()

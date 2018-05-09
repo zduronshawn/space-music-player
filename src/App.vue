@@ -1,9 +1,9 @@
 <template>
   <div id="app">
     <div class="space-wrapper">
-      <three></three>
+      <three :musicList="musicList"></three>
     </div>
-    <controller class="controller-wrapper" ref="audioScoure"></controller>
+    <controller class="controller-wrapper" ref="audioScoure" @listUpdate="listUpdate"></controller>
   </div>
 </template>
 
@@ -13,9 +13,19 @@ import three from '@/components/three/three';
 
 export default {
   name: 'App',
+  data() {
+    return {
+      musicList: []
+    };
+  },
   components: {
     controller,
     three
+  },
+  methods: {
+    listUpdate(list) {
+      this.musicList = list;
+    }
   }
 };
 </script>
