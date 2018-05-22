@@ -7,7 +7,13 @@
       <div class="add-content" @click.stop="ifshowSetting=ifshowSetting">
         <div class="map-container"></div>
         <div class="setting">
-          <button @click="createAudioModel">submit</button>
+          <input type="number" name="positionX" v-model="newSoundX">
+          <input type="number" name="positionZ" v-model="newSoundZ">
+           <select v-model="selected" v-if="musicList">
+            <option disabled value="">请选择</option>
+            <option v-for="(soundItem,index) of musicList">{{index}}. {{soundItem.name}}</option>
+          </select>
+          <span @click="createAudioModel">submit</span>
         </div>
       </div>
     </div>
@@ -34,6 +40,13 @@ var sphere = new THREE.SphereBufferGeometry(20, 32, 16),
   audioLoader = new THREE.AudioLoader();
 
 var gui = new dat.GUI();
+document.querySelector('.dg.a').style="float:left";
+
+var SoundControl = function () {
+  this.volume = 0.8;
+  this.positionX = 50;
+  this.positionZ = 50;
+};
 
 export default {
   name: 'Three',
@@ -42,7 +55,9 @@ export default {
       isPlaying: [],
       ifshowSetting: false,
       gridWidth: 2000,
-      selected: 0
+      selected: "",
+      newSoundX:30,
+      newSoundZ:30
     };
   },
   props: {
@@ -67,38 +82,37 @@ export default {
       renderer.setSize(window.innerWidth, window.innerHeight);
       control.handleResize();
     },
+    soundControlInit(sound,mesh){
+      var soundControl = new SoundControl();
+
+      var soundFolder = gui.addFolder(this.musicList[this.selected.substring(0,1)].name);
+      soundFolder.add(soundControl, 'volume').min(0.0).max(1.0).step(0.01).onChange(function() {
+        sound.setVolume(soundControl.volume);
+      });
+      soundFolder.add(soundControl,'positionX').min(-1000).max(1000).step(1).onChange(function() {
+        mesh.position.x =soundControl.positionX;
+      });
+      soundFolder.add(soundControl,'positionZ').min(-1000).max(1000).step(1).onChange(function() {
+        mesh.position.z =soundControl.positionZ;
+      });
+    },
     createAudioModel(positonX, positionZ) {
       if (this.musicList.length !== 0) {
         // create an object for the sound to play from
+        positionX = this.newSoundX;
+        positionZ = this.newSoundZ;
         var sphere = new THREE.SphereGeometry(20, 32, 16);
         var mesh = new THREE.Mesh(sphere, material2);
-        mesh.position.set(80, 0, 80);
+        mesh.position.set(positionX, 0, positionZ);
         scene.add(mesh);
 
         var sound = new THREE.PositionalAudio(listener);
-        audioLoader.load(this.musicList[0].url, function(buffer) {
+        audioLoader.load(this.musicList[this.selected.substring(0,1)].url, function(buffer) {
           sound.setBuffer(buffer);
           sound.setRefDistance(20);
           sound.play();
         });
-        var SoundControl = function () {
-          this.volume = sound.getVolume();
-          this.positionX = mesh.position.x;
-          this.positionZ = mesh.position.z;
-        };
-
-        var soundControl = new SoundControl();
-
-        var soundFolder = gui.addFolder(this.musicList[0].name);
-        soundFolder.add(soundControl, 'volume').min(0.0).max(1.0).step(0.01).onChange(function() {
-          sound.setVolume(soundControl.volume);
-        });
-        soundFolder.add(soundControl,'positionX').min(-1000).max(1000).step(1).onChange(function() {
-          mesh.position.x =soundControl.positionX;
-        });
-        soundFolder.add(soundControl,'positionZ').min(-1000).max(1000).step(1).onChange(function() {
-          mesh.position.z =soundControl.positionZ;
-        });
+        this.soundControlInit(sound,mesh);
         // finally add the sound to the mesh
         mesh.add(sound);
       } else {

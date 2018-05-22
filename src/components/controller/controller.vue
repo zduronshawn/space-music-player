@@ -37,7 +37,7 @@ let currentSong = new Audio();
 export default {
   data() {
     return {
-      menuShow: false,
+      menuShow: true,
       ishighlight: false,
       musicList: [],
       currentIndex: 0,
