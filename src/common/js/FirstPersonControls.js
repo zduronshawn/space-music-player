@@ -192,9 +192,9 @@ export default function(object, domElement) {
     targetPosition.y = position.y + 100 * Math.cos(this.phi);
     targetPosition.z = position.z + 100 * Math.sin(this.phi) * Math.sin(this.theta);
 
-    if (this.mouseY > -0.01) {
-      this.object.lookAt(targetPosition);
-    }
+    // if (this.mouseY > -this.viewHalfY / 4) {
+    this.object.lookAt(targetPosition);
+    // }
   };
 
   function contextmenu(event) {

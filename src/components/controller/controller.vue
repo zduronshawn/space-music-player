@@ -92,6 +92,7 @@ export default {
       }
     },
     // the play function need to be updated
+    // play the song in the current index
     play(index) {
       this.currentIndex = index;
       currentSong.src = this.musicList[this.currentIndex].url;
@@ -135,6 +136,7 @@ export default {
           // avoid The play() request was interrupted by a call to pause()
           currentSong.src = that.musicList[0].url;
           firstupload = false;
+          console.log(that.musicList);
         }
       };
       that.$refs.dropbox.ondragleave = (e) => {
