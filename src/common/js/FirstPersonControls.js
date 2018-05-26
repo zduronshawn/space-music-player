@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 
-export default function(object, domElement) {
+export default function (object, domElement) {
   this.object = object;
   this.target = new THREE.Vector3(0, 0, 0);
 
@@ -49,7 +49,7 @@ export default function(object, domElement) {
     this.domElement.setAttribute('tabindex', -1);
   }
 
-  this.handleResize = function() {
+  this.handleResize = function () {
     if (this.domElement === document) {
       this.viewHalfX = window.innerWidth / 2;
       this.viewHalfY = window.innerHeight / 2;
@@ -59,7 +59,7 @@ export default function(object, domElement) {
     }
   };
 
-  this.onMouseDown = function(event) {
+  this.onMouseDown = function (event) {
     if (this.domElement !== document) {
       this.domElement.focus();
     }
@@ -76,7 +76,7 @@ export default function(object, domElement) {
     this.mouseDragOn = true;
   };
 
-  this.onMouseUp = function(event) {
+  this.onMouseUp = function (event) {
     event.preventDefault();
     event.stopPropagation();
 
@@ -89,7 +89,7 @@ export default function(object, domElement) {
     this.mouseDragOn = false;
   };
 
-  this.onMouseMove = function(event) {
+  this.onMouseMove = function (event) {
     if (this.domElement === document) {
       this.mouseX = event.pageX - this.viewHalfX;
       this.mouseY = event.pageY - this.viewHalfY;
@@ -99,7 +99,7 @@ export default function(object, domElement) {
     }
   };
 
-  this.onKeyDown = function(event) {
+  this.onKeyDown = function (event) {
     // event.preventDefault();
 
     switch (event.keyCode) {
@@ -120,7 +120,7 @@ export default function(object, domElement) {
     }
   };
 
-  this.onKeyUp = function(event) {
+  this.onKeyUp = function (event) {
     switch (event.keyCode) {
       case 38: /* up */
       case 87: /* W */ this.moveForward = false; break;
@@ -139,7 +139,7 @@ export default function(object, domElement) {
     }
   };
 
-  this.update = function(delta) {
+  this.update = function (delta) {
     if (this.enabled === false) return;
 
     if (this.heightSpeed) {
@@ -201,7 +201,7 @@ export default function(object, domElement) {
     event.preventDefault();
   }
 
-  this.dispose = function() {
+  this.dispose = function () {
     this.domElement.removeEventListener('contextmenu', contextmenu, false);
     this.domElement.removeEventListener('mousedown', _onMouseDown, false);
     this.domElement.removeEventListener('mousemove', _onMouseMove, false);
@@ -226,7 +226,7 @@ export default function(object, domElement) {
   window.addEventListener('keyup', _onKeyUp, false);
 
   function bind(scope, fn) {
-    return function() {
+    return function () {
       fn.apply(scope, arguments);
     };
   }
