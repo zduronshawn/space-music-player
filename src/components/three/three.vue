@@ -94,8 +94,8 @@ export default {
     },
     soundControlInit(sound, mesh) {
       var soundControl = new SoundControl();
-
-      var soundFolder = gui.addFolder(this.musicList[this.selected.substring(0, 1)].name);
+      var songName = this.musicList[this.selected.substring(0, 1)].name;
+      var soundFolder = gui.addFolder(songName);
       soundFolder.add(soundControl, 'volume').min(0.0).max(1.0).step(0.01).onChange(function () {
         sound.setVolume(soundControl.volume);
       });
@@ -167,7 +167,7 @@ export default {
         diffX = 0;
         diffY = 0;
       }
-    }
+    },
   },
   mounted() {
     scene = new THREE.Scene();
@@ -269,6 +269,7 @@ export default {
           border-radius: 50%;
           background-color: #181029;
           transform: translate(-50%, -50%);
+          z-index: 100;
         }
       }
 
@@ -304,6 +305,7 @@ export default {
           font-weight: bold;
           background-color: highlight;
           border-radius: 20px;
+          cursor: pointer;
           overflow: hidden;
         }
       }

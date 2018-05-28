@@ -30,7 +30,12 @@ export default {
     }
   },
 
-  methods: {},
+  methods: {
+    update(top, left) {
+      this.$refs.point.style.top = `${top}px`;
+      this.$refs.point.style.left = `${left}px`;
+    }
+  },
 
   mounted() {
     this.$refs.point.style.top = `${this.pTop}px`;
@@ -60,9 +65,9 @@ export default {
   position: absolute;
   top: 50%;
   left: 120%;
-  width:50px;
+  width: 50px;
   content: attr(data-name);
-  font-size:10px;
-  white-space:nowrap;
+  font-size: 10px;
+  white-space: nowrap;
 }
 </style>
