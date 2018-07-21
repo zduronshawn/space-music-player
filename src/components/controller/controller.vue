@@ -45,10 +45,6 @@ export default {
     };
   },
 
-  components: {},
-
-  computed: {},
-
   methods: {
     menuDisplay() {
       this.menuShow = !this.menuShow;

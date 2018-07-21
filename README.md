@@ -17,7 +17,7 @@ npm run build
 # build for production and view the bundle analyzer report
 npm run build --report
 ```
-
+open in port 8081
 ##bug
 1. Sometimes it will move backwords automatically.
 2. The change in dat.gui will not trigger the change of song point in the map.
