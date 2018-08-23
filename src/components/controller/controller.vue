@@ -169,7 +169,6 @@ export default {
     position: relative;
     width: 100%;
 
-    // overflow: hidden;
     .fade-enter-active, .fade-leave-active {
       transition: transform 0.4s ease;
     }
