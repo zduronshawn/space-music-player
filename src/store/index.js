@@ -9,8 +9,11 @@ export function createStore() {
       getDrawer: state => state.showDrawer
     },
     mutations: {
-      toggleDrawer: (state) => {
-        state.showDrawer = !state.showDrawer
+      toggleDrawer: (state,flag) => {
+        state.showDrawer = flag
+      },
+      closeDrawer: (state) => {
+        state.showDrawer = false
       }
     }
   })

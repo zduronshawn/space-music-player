@@ -7,7 +7,9 @@
       :style="{ width:width+'px',backgroundColor:color }">
       <div class="header">
         <i class="icon-close" @click="toggleDrawer"></i>
-        <h1 class="text">Menu</h1>
+        <slot name="header">
+          <h1 class="text">Menu</h1>
+        </slot>
       </div>
     </div>
     
@@ -36,8 +38,14 @@ export default {
     },
     title: {
       type: String
+    },
+    position: {
+      type: String,
+      default: "right",
+      validator: value => ["left","right"].indexOf(value) !== -1
     }
   },
+  computed: {},
   methods: {
     toggleDrawer() {
       this.$emit("update:visible", !this.visible);
@@ -66,28 +74,25 @@ export default {
 
   .header {
     display: flex;
-    width: 100%;
+    box-sizing: border-box;
+    padding: 15px;
     height: 70px;
-    background-color: l1-title;
+    font-size: 0;
 
     .icon-close {
       flex: 0;
-      line-height: 70px;
-      vertical-align: top;
-      margin-left: 15px;
+      line-height: 40px;
       font-size: 45px;
-      color: light-green;
+      color: l1-title;
       font-weight: 700;
     }
 
     .text {
       flex: 1;
-      line-height: 70px;
-      vertical-align: top;
-      margin-right: 15px;
+      line-height: 40px;
       font-size: 34px;
       font-weight: 700;
-      color: dark-purple;
+      color: l1-title;
       text-align: right;
     }
   }

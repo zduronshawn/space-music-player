@@ -1,7 +1,7 @@
 <!--  -->
 <template>
   <div class="controller-content">
-    <i class="icon-menu" @click="toggleDrawer"></i>
+    <i class="icon-menu" @click="toggleDrawer(true)"></i>
     <Drawer :visible.sync="showDrawer"></Drawer>
     
   </div>
@@ -22,7 +22,7 @@ export default {
         return this.$store.state.showDrawer;
       },
       set() {
-        this.toggleDrawer();
+        this.toggleDrawer(false);
       }
     }
   },
@@ -48,7 +48,7 @@ export default {
     top: 0;
     margin: 20px;
     font-size: 40px;
-    color: light-green;
+    color: light-text;
   }
 }
 </style>
