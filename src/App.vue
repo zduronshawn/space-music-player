@@ -11,7 +11,7 @@
 import controller from '@/components/controller/controller';
 import three from '@/components/three/three';
 
-export default {
+export default {  
   name: 'App',
   data() {
     return {
