@@ -1,12 +1,13 @@
 <!--  -->
 <template>
   <div class="controller-content">
-    <i class="icon-menu" @click="menuDisplay"></i>
+    <i class="icon-menu" @click="toggleMenu"></i>
     <div class="menu-wrapper">
       <transition name="fade">
-        <div class="menu-content" v-show="menuShow">
+        <div class="menu-content" v-show="showMenu">
           <div class="header">
-            <i class="icon-close" @click="menuDisplay"></i>
+            <i class="icon-close" @click="toggleMenu
+            "></i>
             <h1 class="text">Menu</h1>
           </div>
           <div class="dropbox" ref="dropbox" :class="{highlight:ishighlight}">
@@ -33,6 +34,8 @@
 </template>
 
 <script>
+import { mapGetters, mapMutations } from "vuex";
+
 let currentSong = new Audio();
 export default {
   data() {
@@ -44,11 +47,15 @@ export default {
       currentState: 0
     };
   },
-
+  computed: {
+    ...mapGetters({
+      showMenu:"getDrawer"
+    })
+  },
   methods: {
-    menuDisplay() {
-      this.menuShow = !this.menuShow;
-    },
+    ...mapMutations({
+      toggleMenu:"toggleDrawer"
+    }),
     backward() {
       if (this.musicList.length !== 0) {
         if (this.currentIndex === 0) {
@@ -58,7 +65,7 @@ export default {
         }
         this.play(this.currentIndex);
       } else {
-        console.log('the playlist is empty');
+        console.log("the playlist is empty");
       }
     },
     forward() {
@@ -70,13 +77,13 @@ export default {
         }
         this.play(this.currentIndex);
       } else {
-        console.log('the playlist is empty');
+        console.log("the playlist is empty");
       }
     },
     // control for play and pause
     playControl() {
       if (this.musicList.length === 0) {
-        console.log('the playlist is empty');
+        console.log("the playlist is empty");
       } else {
         if (this.currentState) {
           currentSong.pause();
@@ -103,21 +110,22 @@ export default {
       // this function can create is URL for a local resource
       let getBoldURL = window.URL.createObjectURL.bind(URL);
       // dragEvent listener
-      that.$refs.dropbox.ondragenter = (e) => {
+      that.$refs.dropbox.ondragenter = e => {
         e.preventDefault();
         that.ishighlight = true;
       };
-      that.$refs.dropbox.ondragover = (e) => {
+      that.$refs.dropbox.ondragover = e => {
         e.preventDefault();
       };
-      that.$refs.dropbox.ondrop = (e) => {
+      that.$refs.dropbox.ondrop = e => {
         e.preventDefault();
         const data = e.dataTransfer.files;
+        console.log(data);
         if (data.length < 1) {
           return;
         }
         for (let i = 0; i < data.length; i++) {
-          if (data[i].type.indexOf('audio') !== -1) {
+          if (data[i].type.indexOf("audio") !== -1) {
             that.musicList.push({
               name: data[i].name,
               url: getBoldURL(data[i])
@@ -126,7 +134,7 @@ export default {
             alert(`${data[i].name} is not an Audio file`);
           }
         }
-        that.$emit('listUpdate', that.musicList);
+        that.$emit("listUpdate", that.musicList);
         that.ishighlight = false;
         if (firstupload) {
           // avoid The play() request was interrupted by a call to pause()
@@ -135,14 +143,13 @@ export default {
           console.log(that.musicList);
         }
       };
-      that.$refs.dropbox.ondragleave = (e) => {
+      that.$refs.dropbox.ondragleave = e => {
         e.preventDefault();
         that.ishighlight = false;
       };
     })();
   }
 };
-
 </script>
 <style lang='stylus' scoped>
 @import '../../common/stylus/icon.styl';
@@ -162,7 +169,6 @@ export default {
     position: relative;
     width: 100%;
 
-    // overflow: hidden;
     .fade-enter-active, .fade-leave-active {
       transition: transform 0.4s ease;
     }

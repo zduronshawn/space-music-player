@@ -1,18 +1,25 @@
 <template>
   <div id="app">
     <div class="space-wrapper">
-      <three :musicList="musicList"></three>
+      <three :musicList="musicList" @click.native="toggleDrawer(false)" @touchstart.native="toggleDrawer(false)"></three>
     </div>
-    <controller class="controller-wrapper" ref="audioScoure" @listUpdate="listUpdate"></controller>
+    <controller ref="audioScoure" @listUpdate="listUpdate"></controller>
   </div>
 </template>
 
 <script>
-import controller from '@/components/controller/controller';
-import three from '@/components/three/three';
+import { mapGetters, mapMutations } from "vuex";
+import controller from "@/components/controller/controller1";
+import three from "@/components/three/three";
+import upload from "@/components/controller/upload";
 
+<<<<<<< HEAD
 export default {  
   name: 'App',
+=======
+export default {
+  name: "App",
+>>>>>>> 8f316c874d60f659763c1f6db5f57a4d19468e12
   data() {
     return {
       musicList: []
@@ -20,9 +27,13 @@ export default {
   },
   components: {
     controller,
-    three
+    three,
+    upload
   },
   methods: {
+    ...mapMutations({
+      toggleDrawer:"toggleDrawer"
+    }),
     listUpdate(list) {
       this.musicList = list;
     }
@@ -42,7 +53,7 @@ export default {
   .space-wrapper {
     width: 100%;
     height: 100%;
-    background-color: dark-purple;
+    // background-color: dark-purple;
   }
 
   .controller-wrapper {
@@ -51,5 +62,4 @@ export default {
     right: 0;
   }
 }
-
 </style>
