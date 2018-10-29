@@ -4,7 +4,7 @@
       <span class="text"></span>
       <input type="file" name="audio" id="audioInput">      
     </div>
-    <div class="upload-status">status</div>
+    <!-- <div class="upload-status">status</div> -->
   </div>
 </template>
 
@@ -21,6 +21,9 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
+.upload-box {
+  height :30px
+}
 </style>
 
 

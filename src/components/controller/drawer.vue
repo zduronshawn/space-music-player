@@ -10,6 +10,7 @@
         <slot name="header">
           <h1 class="text">Menu</h1>
         </slot>
+        <slot name="body"></slot>
       </div>
     </div>
     
@@ -42,7 +43,7 @@ export default {
     position: {
       type: String,
       default: "right",
-      validator: value => ["left","right"].indexOf(value) !== -1
+      validator: value => ["left", "right"].indexOf(value) !== -1
     }
   },
   computed: {},

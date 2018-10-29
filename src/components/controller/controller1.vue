@@ -2,13 +2,17 @@
 <template>
   <div class="controller-content">
     <i class="icon-menu" @click="toggleDrawer(true)"></i>
-    <Drawer :visible.sync="showDrawer"></Drawer>
+    <Drawer :visible.sync="showDrawer">
+      
+    </Drawer>
     
   </div>
 </template>
 
 <script>
 import Drawer from "./drawer";
+import Upload from './upload'
+
 import { mapGetters, mapMutations } from "vuex";
 let currentSong = new Audio();
 export default {
@@ -33,7 +37,8 @@ export default {
     })
   },
   components: {
-    Drawer
+    Drawer,
+    Upload
   }
 };
 </script>
